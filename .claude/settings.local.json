@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(SSH_AUTH_SOCK=/tmp/ssh-gfmBE4tOybEf/agent.36194 ssh wetheplumbers:*)",
+      "Bash(SSH_AUTH_SOCK=/tmp/ssh-gfmBE4tOybEf/agent.36194 bun run:*)"
+    ]
+  }
+}
