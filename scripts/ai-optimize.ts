@@ -41,6 +41,23 @@ const PAGE_LIMIT = flags.limit ? parseInt(flags.limit, 10) : Infinity;
 const DRY_RUN = flags["dry-run"]!;
 const PAGE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
+const OPTIMIZE_PROMPT = `Read content.html and meta.json in this directory. Optimize them for a local plumbing company website (We The Plumbers TX, Conroe, Texas). Apply these changes IN PLACE by editing the files directly:
+
+content.html:
+- Fix grammar, spelling, and awkward phrasing
+- Tighten verbose or repetitive paragraphs
+- Improve heading hierarchy (single H1, logical H2/H3 structure)
+- Remove duplicate content or filler text
+- Ensure local SEO keywords appear naturally (Conroe, Montgomery County, Texas)
+- Preserve ALL Breakdance HTML structure, classes, and attributes exactly — only modify text content
+- Do NOT add, remove, or restructure any HTML elements or Breakdance components
+
+meta.json:
+- Optimize the "title" field for SEO (60 chars max, include primary keyword + location)
+- Do NOT modify id, slug, uri, or modified fields
+
+Be concise and surgical. Only change what genuinely improves quality. Do not rewrite content that is already good.`;
+
 // ── Types ───────────────────────────────────────────────────────────────────
 interface PageResult {
   page: string;
@@ -161,14 +178,14 @@ async function optimizePage(
       [
         "claude",
         "-p",
-        "/optimize content.html meta.json",
+        OPTIMIZE_PROMPT,
         "--dangerously-skip-permissions",
       ],
       {
         cwd: pageDir,
         stdout: "pipe",
         stderr: "pipe",
-        env: { ...process.env },
+        env: { ...process.env, CLAUDECODE: "", CLAUDE_CODE_ENTRYPOINT: "" },
       }
     );
 
